@@ -12,6 +12,7 @@ import { createTrees, animateTrees, treeMeshes } from "./trees.js";
 import { createCharacters } from "./characters.js";
 import { createReindeer } from "./reindeer.js";
 import { createProps, animateProps } from "./props.js";
+import { createWeatherEffects, animateWeatherEffects } from "./snow.js";
 
 // ── Renderer ────────────────────────────────────────────────────────────────
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -65,6 +66,7 @@ createTrees(scene);
 createCharacters(scene);
 createReindeer(scene);
 createProps(scene);
+createWeatherEffects(scene);
 
 // ── Animation loop ──────────────────────────────────────────────────────────
 const clock = new THREE.Clock();
@@ -72,6 +74,7 @@ const clock = new THREE.Clock();
 function animate() {
   requestAnimationFrame(animate);
 
+  const delta = clock.getDelta();
   const elapsed = clock.getElapsedTime();
 
   // Update orbit controls damping
@@ -81,6 +84,7 @@ function animate() {
   animateStars(elapsed);
   animateTrees(elapsed);
   animateProps(elapsed);
+  animateWeatherEffects(elapsed, delta);
 
   // Render the scene
   renderer.render(scene, camera);
