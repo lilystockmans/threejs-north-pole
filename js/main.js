@@ -6,6 +6,9 @@ import * as THREE from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { createTerrain } from "./terrain.js";
 import { createSky, animateStars } from "./sky.js";
+import { createNorthPole } from "./northpole.js";
+import { createWorkshop } from "./workshop.js";
+import { createTrees, animateTrees, treeMeshes } from "./trees.js";
 
 // ── Renderer ────────────────────────────────────────────────────────────────
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -53,6 +56,9 @@ controls.target.set(0, 0, 0);
 // ── Build the world ─────────────────────────────────────────────────────────
 createTerrain(scene);
 createSky(scene);
+createNorthPole(scene);
+createWorkshop(scene);
+createTrees(scene);
 
 // ── Animation loop ──────────────────────────────────────────────────────────
 const clock = new THREE.Clock();
@@ -67,6 +73,7 @@ function animate() {
 
   // Animate modules
   animateStars(elapsed);
+  animateTrees(elapsed);
 
   // Render the scene
   renderer.render(scene, camera);
