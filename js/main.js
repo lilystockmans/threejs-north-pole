@@ -9,6 +9,8 @@ import { createSky, animateStars } from "./sky.js";
 import { createNorthPole } from "./northpole.js";
 import { createWorkshop } from "./workshop.js";
 import { createTrees, animateTrees, treeMeshes } from "./trees.js";
+import { createCharacters } from "./characters.js";
+import { createReindeer } from "./reindeer.js";
 
 // ── Renderer ────────────────────────────────────────────────────────────────
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -59,6 +61,8 @@ createSky(scene);
 createNorthPole(scene);
 createWorkshop(scene);
 createTrees(scene);
+createCharacters(scene);
+createReindeer(scene);
 
 // ── Animation loop ──────────────────────────────────────────────────────────
 const clock = new THREE.Clock();
