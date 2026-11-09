@@ -13,6 +13,7 @@ import { createCharacters } from "./characters.js";
 import { createReindeer } from "./reindeer.js";
 import { createProps, animateProps } from "./props.js";
 import { createWeatherEffects, animateWeatherEffects } from "./snow.js";
+import { setupInteraction, animateInteraction } from "./interaction.js";
 
 // ── Renderer ────────────────────────────────────────────────────────────────
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -68,6 +69,9 @@ createReindeer(scene);
 createProps(scene);
 createWeatherEffects(scene);
 
+// ── Interactive raycasting ──────────────────────────────────────────────────
+setupInteraction(camera, scene, treeMeshes, renderer.domElement);
+
 // ── Animation loop ──────────────────────────────────────────────────────────
 const clock = new THREE.Clock();
 
@@ -85,6 +89,7 @@ function animate() {
   animateTrees(elapsed);
   animateProps(elapsed);
   animateWeatherEffects(elapsed, delta);
+  animateInteraction(elapsed, delta, treeMeshes);
 
   // Render the scene
   renderer.render(scene, camera);
