@@ -3,6 +3,7 @@
  */
 
 import * as THREE from "three";
+import { getTerrainHeight } from "./terrain.js";
 
 /** Array of tree group meshes — exported for raycasting in later phases */
 export const treeMeshes = [];
@@ -12,22 +13,34 @@ const lightSpheres = [];
 
 /**
  * Tree positions around the scene: [x, z, scale]
- * Some near the workshop, some scattered around.
+ * Enlarged to grand coniferous scale (~1.8x - 2.5x) to frame Santa's workshop,
+ * border the snowy hills, and cast dramatic low-poly shadows across the terrain.
  */
 const treeData = [
-  { x:  -6, z:  -4, scale: 1.2 },
-  { x:  -8, z:   4, scale: 0.9 },
-  { x:   7, z:  -6, scale: 1.0 },
-  { x:  12, z:   3, scale: 1.3 },
-  { x: -18, z:  -4, scale: 0.8 },
-  { x:  -4, z:  10, scale: 1.1 },
-  { x:  15, z: -10, scale: 0.7 },
-  { x:   3, z:  12, scale: 1.0 },
-  { x: -14, z:   8, scale: 0.85 },
+  { x:  -2.0, z:  -5.5, scale: 1.85 }, // Near workshop pathway & snowman clearing
+  { x: -10.0, z:   6.2, scale: 1.9  }, // South riverbank meadow
+  { x:   9.5, z:  -3.5, scale: 1.8  }, // Clearing near snowman & campfire 1
+  { x:  14.5, z:   0.0, scale: 2.1  }, // Grand pine framing eastern reindeer grounds
+  { x: -21.0, z:  -6.0, scale: 2.3  }, // Northwest mountain foothills
+  { x:  -3.0, z:  13.0, scale: 2.0  }, // South rolling hills
+  { x:  16.5, z: -10.5, scale: 2.4  }, // Far northeast ridge giant pine
+  { x:   4.5, z:  14.5, scale: 2.0  }, // Southeast hill overlook
+  { x: -16.0, z:   9.0, scale: 2.1  }, // Southwest snowy ridge
+  { x: -18.5, z: -13.0, scale: 2.5  }, // Towering workshop backdrop pine (west)
+  { x:  20.0, z:  -5.0, scale: 2.2  }, // Far eastern perimeter pine
+  { x:  -5.0, z: -16.0, scale: 2.3  }, // Workshop northern backdrop pine
 ];
 
-/** Christmas light colors */
-const lightColors = [0xe74c3c, 0xf4d03f, 0x3498db, 0x2ecc71, 0xe67e22];
+/** Christmas light colors — vibrant festive palette */
+const lightColors = [
+  0xe74c3c, // Ruby Red
+  0xf4d03f, // Golden Yellow
+  0x3498db, // Arctic Ice Blue
+  0x2ecc71, // Emerald Green
+  0xe67e22, // Warm Orange
+  0x9b59b6, // Sugar Plum Violet
+  0xfffae6, // Warm White
+];
 
 /**
  * Creates a single low-poly Christmas tree with 3 foliage layers,
@@ -38,13 +51,15 @@ function buildTree() {
   const tree = new THREE.Group();
 
   // ── Trunk ──────────────────────────────────────────────────────────────
-  const trunkGeo = new THREE.CylinderGeometry(0.2, 0.25, 1, 6);
+  const trunkGeo = new THREE.CylinderGeometry(0.22, 0.28, 1, 6);
   const trunkMat = new THREE.MeshLambertMaterial({
     color: 0x8b5e3c, // Warm Wood
     flatShading: true,
   });
   const trunk = new THREE.Mesh(trunkGeo, trunkMat);
   trunk.position.y = 0.5;
+  trunk.castShadow = true;
+  trunk.receiveShadow = true;
   tree.add(trunk);
 
   // ── Foliage layers (3 stacked cones, decreasing in size) ───────────────
@@ -65,6 +80,8 @@ function buildTree() {
     });
     const cone = new THREE.Mesh(coneGeo, coneMat);
     cone.position.y = layer.y;
+    cone.castShadow = true;
+    cone.receiveShadow = true;
     tree.add(cone);
     coneMeshes.push(cone);
 
@@ -76,11 +93,14 @@ function buildTree() {
     });
     const snowCap = new THREE.Mesh(snowCapGeo, snowCapMat);
     snowCap.position.y = layer.y + layer.height / 2 - 0.05;
+    snowCap.castShadow = true;
+    snowCap.receiveShadow = true;
     tree.add(snowCap);
   });
 
   // ── Twinkling light spheres on the tree surface ────────────────────────
-  const lightsPerTree = 6 + Math.floor(Math.random() * 3); // 6-8 lights
+  // More lights (12-16) to richly adorn the larger tree
+  const lightsPerTree = 12 + Math.floor(Math.random() * 5);
 
   for (let i = 0; i < lightsPerTree; i++) {
     // Pick a random foliage layer to place the light on
@@ -95,7 +115,7 @@ function buildTree() {
     const yPos = layer.y + (layer.height / 2) * (1 - 2 * t);
 
     // Cone radius at this height
-    const coneRadius = layer.radius * t * 0.9;
+    const coneRadius = layer.radius * t * 0.92;
 
     const x = Math.cos(angle) * coneRadius;
     const z = Math.sin(angle) * coneRadius;
@@ -103,7 +123,7 @@ function buildTree() {
     // Pick a random christmas light color
     const color = lightColors[Math.floor(Math.random() * lightColors.length)];
 
-    const lightGeo = new THREE.SphereGeometry(0.06, 4, 4);
+    const lightGeo = new THREE.SphereGeometry(0.065, 4, 4);
     const lightMat = new THREE.MeshBasicMaterial({
       color: color,
     });
@@ -129,7 +149,8 @@ export function createTrees(scene) {
   treeData.forEach((data) => {
     const tree = buildTree();
     tree.scale.setScalar(data.scale);
-    tree.position.set(data.x, 0, data.z);
+    const groundY = getTerrainHeight ? getTerrainHeight(data.x, data.z) : 0;
+    tree.position.set(data.x, groundY, data.z);
 
     // Slight random Y rotation for variety
     tree.rotation.y = Math.random() * Math.PI * 2;

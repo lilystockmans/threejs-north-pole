@@ -15,7 +15,7 @@ export function createSky(scene) {
   // ── Sky dome ────────────────────────────────────────────────────────────
   const domeGeo = new THREE.SphereGeometry(200, 32, 32);
   const domeMat = new THREE.MeshBasicMaterial({
-    color: 0x0a1628, // Deep Night Sky
+    color: 0x0f2038, // Deep Atmospheric Night Sky (matches scene.background)
     side: THREE.BackSide, // Render inside faces
   });
   const dome = new THREE.Mesh(domeGeo, domeMat);

@@ -116,7 +116,7 @@ function toggleTreeLights(tree, scene) {
 
     // 2. Add warm golden point light that illuminates the tree & ground
     if (!tree.userData.treeLight) {
-      const treeLight = new THREE.PointLight(0xffd54f, 2.0, 14);
+      const treeLight = new THREE.PointLight(0xffd54f, 2.2, 18);
       treeLight.position.set(0, 5.2, 0);
       tree.add(treeLight);
       tree.userData.treeLight = treeLight;

@@ -344,28 +344,26 @@ function buildFence(scene) {
     scene.add(rail);
   }
 
-  // ── Fence posts & rails along the front of the workshop (z = -1.5) ────
-  // Workshop front face is at z = -8 + 3 = -5 (workshop at -12, 0, -8; body 6 deep)
-  // Place fence slightly in front: z = -4
-  const frontPosts = [];
-  const frontZ = -4;
-  for (let i = 0; i < 8; i++) {
-    const x = -18 + i * 1.8;
+  // ── Fence posts & rails: perimeter fencing leaving courtyard open ─────
+  const frontZ = -2.5;
+  const leftFrontPosts = [];
+  for (let i = 0; i < 4; i++) {
+    const x = -19.5 + i * 1.8; // -19.5, -17.7, -15.9, -14.1
     const post = addPost(x, frontZ);
-    frontPosts.push({ x, z: frontZ });
+    leftFrontPosts.push({ x, z: frontZ });
   }
-  // Connect front posts with 2 horizontal rails each
-  for (let i = 0; i < frontPosts.length - 1; i++) {
-    const a = frontPosts[i];
-    const b = frontPosts[i + 1];
+  // Connect left front posts with 2 horizontal rails each
+  for (let i = 0; i < leftFrontPosts.length - 1; i++) {
+    const a = leftFrontPosts[i];
+    const b = leftFrontPosts[i + 1];
     addRail(a.x, a.z, b.x, b.z, 0.25);
     addRail(a.x, a.z, b.x, b.z, 0.6);
   }
 
-  // ── Fence posts & rails along the side (x = -18) going back ──────────
+  // ── Fence posts & rails along the side (x = -19.5) going back ────────
   const sidePosts = [];
-  const sideX = -18;
-  for (let i = 0; i < 6; i++) {
+  const sideX = -19.5;
+  for (let i = 0; i < 7; i++) {
     const z = frontZ - i * 1.8;
     const post = addPost(sideX, z);
     sidePosts.push({ x: sideX, z });
@@ -401,9 +399,9 @@ export function createProps(scene) {
 
   // ── Gift boxes ×10 scattered near workshop & trees ────────────────────
   const giftPositions = [
-    // Near workshop (-12, -8 area)
-    [-10, -6], [-13, -5], [-15, -7], [-11, -10], [-14, -9],
-    [-9, -11], [-16, -6],
+    // Near workshop loading dock & courtyard
+    [-12.5, -2.8], [-13.2, -3.8], [-11.0, -1.8], [-9.5, -2.0], [-4.0, -1.8],
+    [-2.5, -2.5], [-16.0, -5.0],
     // Near trees
     [-5, -3], [6, -5], [3, 11],
   ];

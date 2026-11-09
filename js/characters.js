@@ -334,22 +334,23 @@ function buildElf(hatColor = 0x2d5a3d) {
  * Creates all characters (Santa, Mrs. Claus, 3 Elves) and adds them to the scene.
  */
 export function createCharacters(scene) {
-  // ── Santa — near the workshop door ────────────────────────────────────
+  // ── Santa — proud in front of the workshop courtyard ─────────────────
   const santa = buildSanta();
-  santa.position.set(-8, 0, -5);
+  santa.position.set(-8.0, 0, -2.6);
+  santa.rotation.y = 0.25;
   scene.add(santa);
 
   // ── Mrs. Claus — next to Santa ────────────────────────────────────────
   const mrsClaus = buildMrsClaus();
-  mrsClaus.position.set(-6, 0, -5);
-  mrsClaus.rotation.y = -0.3; // Turned slightly toward Santa
+  mrsClaus.position.set(-6.2, 0, -2.5);
+  mrsClaus.rotation.y = -0.15; // Turned slightly toward Santa
   scene.add(mrsClaus);
 
-  // ── Elves — scattered near the workshop ───────────────────────────────
+  // ── Elves — bustling around the factory and toy chute ─────────────────
   const elfPositions = [
-    { pos: [-14, 0, -5], rotY: 0.4, hat: 0x2d5a3d },  // Green hat
-    { pos: [-10, 0, -10], rotY: -0.3, hat: 0xc0392b }, // Red hat
-    { pos: [-15, 0, -8], rotY: 0.8, hat: 0xf4d03f },   // Yellow hat
+    { pos: [-13.5, 0, -3.2], rotY: 0.5, hat: 0x2d5a3d },  // Green hat: by toy chute
+    { pos: [-4.2, 0, -2.2], rotY: -0.3, hat: 0xc0392b },  // Red hat: in front courtyard
+    { pos: [-15.0, 0, -6.5], rotY: 0.8, hat: 0xf4d03f },  // Yellow hat: near workshop side
   ];
 
   for (const cfg of elfPositions) {

@@ -47,6 +47,11 @@ export function createNorthPole(scene) {
   star.position.y = totalPoleHeight + 0.3;
   poleGroup.add(star);
 
+  // Subtle golden glow point light from the star
+  const starLight = new THREE.PointLight(0xf4d03f, 0.8, 8);
+  starLight.position.y = totalPoleHeight + 0.5;
+  poleGroup.add(starLight);
+
   // ── Horizontal arm for the sign ────────────────────────────────────────
   const armLength = 1.4;
   const armGeo = new THREE.CylinderGeometry(0.06, 0.06, armLength, 6);
