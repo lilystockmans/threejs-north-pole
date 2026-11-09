@@ -11,6 +11,7 @@ import { createWorkshop } from "./workshop.js";
 import { createTrees, animateTrees, treeMeshes } from "./trees.js";
 import { createCharacters } from "./characters.js";
 import { createReindeer } from "./reindeer.js";
+import { createProps, animateProps } from "./props.js";
 
 // ── Renderer ────────────────────────────────────────────────────────────────
 const renderer = new THREE.WebGLRenderer({ antialias: true });
@@ -63,6 +64,7 @@ createWorkshop(scene);
 createTrees(scene);
 createCharacters(scene);
 createReindeer(scene);
+createProps(scene);
 
 // ── Animation loop ──────────────────────────────────────────────────────────
 const clock = new THREE.Clock();
@@ -78,6 +80,7 @@ function animate() {
   // Animate modules
   animateStars(elapsed);
   animateTrees(elapsed);
+  animateProps(elapsed);
 
   // Render the scene
   renderer.render(scene, camera);
