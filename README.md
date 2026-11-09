@@ -11,13 +11,7 @@ A low-poly Christmas diorama built with Three.js. Santa's workshop, elves, reind
 
 ## Run it
 
-The project uses ES modules, so it needs a local server:
-
-```bash
-python3 -m http.server 8000
-```
-
-Then open http://localhost:8000.
+https://north-pole-threejs.vercel.app/
 
 **Controls:** drag to rotate, scroll to zoom, click trees to light them.
 
